@@ -141,31 +141,49 @@ function mkdirFilePath(filePath) {
     }
 }
 
-export function base64ToTableForFile(base64) {
-    const filePath = "./../out/tweakunit_table.txt";
-
-    mkdirFilePath(filePath)
-
-    if (fs.existsSync(filePath)) {
-        fs.truncateSync(filePath, 0)
-    }
-
-    const writerStream = fs.createWriteStream(filePath);
-    const table = new Tabel();
-    writerStream.write(table.strToTable(atob(base64)));
-    writerStream.end();
+function copyFile(sourcePath, targetPath) {
+    mkdirFilePath(targetPath)
+    fs.copyFileSync(sourcePath, targetPath);
 }
 
-export function tableToBase64ForFile(tabel) {
-    const filePath = "./../out/tweakunit_base64.txt";
+const defaultBase64path = "./default/tweakunit_base64.txt";
+const defaultTablePath = "./default/tweakunit_table.txt";
 
-    mkdirFilePath(filePath)
+const base64path = "./../file/tweakunit_base64.txt";
+const tablePath = "./../file/tweakunit_table.txt";
 
-    if (fs.existsSync(filePath)) {
-        fs.truncateSync(filePath, 0)
+export function base64ToTableForFile() {
+
+    mkdirFilePath(tablePath)
+
+    if (fs.existsSync(tablePath)) {
+        fs.truncateSync(tablePath, 0)
     }
 
-    const writerStream = fs.createWriteStream(filePath);
-    writerStream.write(btoa(tabel.replaceAll('\n', '').replaceAll(' ', '')));
-    writerStream.end();
+    if (!fs.existsSync(tablePath)) {
+        copyFile(defaultBase64path, base64path);
+    }
+
+    const base64Str = fs.readFileSync(base64path,'utf-8');
+
+    const table = new Tabel();
+
+    fs.writeFileSync(tablePath,table.strToTable(atob(base64Str)), 'utf-8');
+}
+
+export function tableToBase64ForFile() {
+
+    mkdirFilePath(base64path)
+
+    if (fs.existsSync(base64path)) {
+        fs.truncateSync(base64path, 0)
+    }
+
+    if (!fs.existsSync(tablePath)) {
+        copyFile(defaultTablePath, tablePath);
+    }
+
+    const table64Str = fs.readFileSync(tablePath,'utf-8');
+    
+    fs.writeFileSync(base64path,btoa(table64Str.replaceAll('\n', '').replaceAll(' ', '')), 'utf-8');
 }
