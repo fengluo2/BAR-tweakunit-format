@@ -185,5 +185,5 @@ export function tableToBase64ForFile() {
 
     const table64Str = fs.readFileSync(tablePath,'utf-8');
     
-    fs.writeFileSync(base64path,btoa(table64Str.replaceAll('\n', '').replaceAll(' ', '')), 'utf-8');
+    fs.writeFileSync(base64path,btoa(table64Str.replaceAll('\n', '').replaceAll(' ', '')).replaceAll(/=+$/g,''), 'utf-8');
 }
