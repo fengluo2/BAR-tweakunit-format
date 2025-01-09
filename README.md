@@ -6,4 +6,5 @@ Requires `node` environment
 ### Useage
 Enter the project folder and run `npm install`  
 Enter the `src` directory  
-Run `node b_t.js` or `node b_t.js`
+Run `node b_t.js` or `node b_t.js`  
+The generated files are in the `file` directory

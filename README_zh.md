@@ -7,3 +7,4 @@
 进入项目文件夹,运行`npm install`  
 进入`src`目录  
 运行 `node b_t.js` 或 `node b_t.js`  
+生成的文件在 `file` 目录下
