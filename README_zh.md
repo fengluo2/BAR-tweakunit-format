@@ -1,3 +1,4 @@
+[English](README.md) | [中文](README_zh.md)  
 ### 描述  
 `Beyondallreason` 游戏 `tweakunit` 功能的工具  
 方便的在base64和格式化表格转换  
