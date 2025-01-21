@@ -152,8 +152,7 @@ const defaultTablePath = "./default/tweakunit_table.txt";
 const base64path = "./../file/tweakunit_base64.txt";
 const tablePath = "./../file/tweakunit_table.txt";
 
-export function base64ToTableForFile() {
-
+export function base64ToTableForFile(modeOptionInfo = false) {
     mkdirFilePath(tablePath)
 
     if (fs.existsSync(tablePath)) {
@@ -164,15 +163,25 @@ export function base64ToTableForFile() {
         copyFile(defaultBase64path, base64path);
     }
 
-    const base64Str = fs.readFileSync(base64path,'utf-8');
+    const base64Str = fs.readFileSync(base64path, 'utf-8');
 
     const table = new Tabel();
 
-    fs.writeFileSync(tablePath,table.strToTable(atob(base64Str)), 'utf-8');
+    const tableZipStr = atob(base64Str)
+    const index = tableZipStr.indexOf("{");
+
+    var part1 = "";
+    var part2 = "";
+
+    if (index !== -1) {
+        part1 = tableZipStr.substring(0, index);
+        part2 = tableZipStr.substring(index);
+    }
+
+    fs.writeFileSync(tablePath, part1 + table.strToTable(part2), 'utf-8');
 }
 
-export function tableToBase64ForFile() {
-
+export function tableToBase64ForFile(modeOptionInfo = false) {
     mkdirFilePath(base64path)
 
     if (fs.existsSync(base64path)) {
@@ -183,7 +192,17 @@ export function tableToBase64ForFile() {
         copyFile(defaultTablePath, tablePath);
     }
 
-    const table64Str = fs.readFileSync(tablePath,'utf-8');
-    
-    fs.writeFileSync(base64path,btoa(table64Str.replaceAll('\n', '').replaceAll(' ', '')).replaceAll(/=+$/g,''), 'utf-8');
+    const table64Str = fs.readFileSync(tablePath, 'utf-8');
+
+    const index = table64Str.indexOf("{");
+
+    var part1 = "";
+    var part2 = "";
+
+    if (index !== -1) {
+        part1 = table64Str.substring(0, index);
+        part2 = table64Str.substring(index);
+    }
+
+    fs.writeFileSync(base64path, btoa(part1 + part2.replaceAll('\n', '').replaceAll(' ', '')).replaceAll(/=+$/g, ''), 'utf-8');
 }
