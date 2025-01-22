@@ -204,5 +204,5 @@ export function tableToBase64ForFile(modeOptionInfo = false) {
         part2 = table64Str.substring(index);
     }
 
-    fs.writeFileSync(base64path, btoa(part1 + part2.replaceAll('\n', '').replaceAll(' ', '')).replaceAll(/=+$/g, ''), 'utf-8');
+    fs.writeFileSync(base64path, btoa(part1 + part2.replaceAll(/\n +/g, '')).replaceAll(/=+$/g, ''), 'utf-8');
 }
